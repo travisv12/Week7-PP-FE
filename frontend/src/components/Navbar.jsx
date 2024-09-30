@@ -1,26 +1,10 @@
-// const Navbar = () => {
-//   return (
-//     <nav className="navbar">
-//       <h1>Job Search</h1>
-//       <div className="links">
-//         <a href="/">Home</a>
-//         <a href="/add-job">Add Job</a>
-//       </div>
-//     </nav>
-//   );
-// }
-
-// export default Navbar;
-
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
-  const navigate = useNavigate();
+const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   const handleClick = (e) => {
     e.preventDefault();
+    setIsAuthenticated(false);
     localStorage.removeItem("user");
-    navigate("/");
   };
 
   return (
@@ -29,12 +13,19 @@ const Navbar = () => {
         <h1>React Jobs</h1>
       </Link>
       <div className="links">
-        <div>
-          <Link to="/add-job">Add Job</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Signup</Link>
-          <button onClick={handleClick}>Log out</button>
-        </div>
+        {isAuthenticated && (
+          <div>
+            <Link to="/jobs/add-job">Add Job</Link>
+            <span>{JSON.parse(localStorage.getItem("user")).email}</span>
+            <button onClick={handleClick}>Log out</button>
+          </div>
+        )}
+        {!isAuthenticated && (
+          <div>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Signup</Link>
+          </div>
+        )}
       </div>
     </nav>
   );
