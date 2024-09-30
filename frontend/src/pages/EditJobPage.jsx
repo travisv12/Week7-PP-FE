@@ -17,6 +17,9 @@ const EditJobPage = () => {
 
   const navigate = useNavigate();
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.token : null;
+
   const updateJob = async (job) => {
     try {
       const res = await fetch(`/api/jobs/${job.id}`, {
